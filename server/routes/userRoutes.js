@@ -24,7 +24,7 @@ const upload = multer({
 router.post('/post',upload,crudController.post)
 router.get('/get',crudController.get)
 router.get('/getbyid/:id',crudController.getByid)
-router.patch('/update/:id',upload,crudController.update)
+router.put('/update/:id',upload,crudController.update)
 router.delete('/delete/:id',crudController.delete)
 // router.patch('/todoupdate/:id',upload,todoController.updateTodo)
 

@@ -55,22 +55,30 @@ class crudController{
     }
 
     static update = async(req,res)=>{
-
+        let newUser=req.body
         try {
-            const img = await crudModel.findById(req.params.id)
-            fs.unlink('./uploads/'+img.image,(err)=>{
-                if(err){
-                    console.log(err);
+            if(req.file && req.file.filename){
+                const img = await crudModel.findById(req.params.id)
+                fs.unlink('./uploads/'+img.image,(err)=>{
+                    if(err){
+                        console.log(err);
+                    }
+                })
+                newUser = {
+                    ...newUser,
+                    image:req.file.filename
                 }
-            })
-            const crud = await crudModel.findByIdAndUpdate(req.params.id,({...req.body,
-                image:req.file.filename}));
-             await crud.save()
-             return res.send({"status":"Updated"})
-
+            
+            }
+            const crud = await crudModel.findByIdAndUpdate(req.params.id,(newUser));
+            return res.send({"status":"Updated"})
         } catch (error) {
-            return res.send({"status":"Error"})
+           console.log(error); 
+           return res.send({"status":"Error"})
         }
+            
+
+       
 
     }
 
